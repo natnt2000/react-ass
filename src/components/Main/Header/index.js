@@ -109,6 +109,9 @@ const Header = ({ categories }) => {
                                     <li className="nav-item dropdown active">
                                         <Link className="nav-link dropdown-toggle" to="/shop" data-toggle="dropdown">Shop</Link>
                                     </li>
+                                    <li className="nav-item dropdown active">
+                                        <Link className="nav-link dropdown-toggle" to="/about" data-toggle="dropdown">About</Link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

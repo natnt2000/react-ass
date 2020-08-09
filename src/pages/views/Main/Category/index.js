@@ -115,7 +115,7 @@ const ProductInCategory = ({categories}) => {
                         {/* Products grid*/}
                         <div className="row mx-n2">
                             {/* Product*/}
-                            {products.map(({ _id, name, image, price }, index) => (
+                            {products.length > 0 ? products.map(({ _id, name, image, price }, index) => (
                                 <div className="col-md-4 col-sm-6 px-2 mb-4" key={index}>
                                     <div className="card product-card">
                                         <Link className="card-img-top d-block overflow-hidden" to={`/products/${_id}`}><img src={image} alt="Product" /></Link>
@@ -134,7 +134,7 @@ const ProductInCategory = ({categories}) => {
                                     </div>
                                     <hr className="d-sm-none" />
                                 </div>
-                            ))}
+                            )) : <h2>No Products In Here</h2>}
                         </div>
                     </section>
                 </div>

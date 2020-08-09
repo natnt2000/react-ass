@@ -44,7 +44,7 @@ const Routers = ({ products, onRemove, onAdd, onUpdate, categories, onAddCategor
                     <LayoutAdmin>
                         <Switch>
                             <Route path='/admin' exact>
-                                <Dashboard />
+                                <Dashboard products={products} categories={categories}/>
                             </Route>
                             <Route path='/admin/products' exact>
                                 <ProductsManager products={products} onRemove={onHandleRemove} />
@@ -75,6 +75,9 @@ const Routers = ({ products, onRemove, onAdd, onUpdate, categories, onAddCategor
                             </Route>
                             <Route path="/shop">
                                 <Shop products={products} categories={categories}/>
+                            </Route>
+                            <Route path="/about">
+                                <About />
                             </Route>
                             <Route path="/products/:_id" >
                                 <ProductDetail products={products}/>
