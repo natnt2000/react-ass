@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom';
 import productApiRequest from '../../../../api/productApi';
-const ProductDetail = () => {
-
+import {Link} from 'react-router-dom'
+const ProductDetail = ({ products, onAddToCart }) => {
     const { _id } = useParams();
-
     const [product, setProduct] = useState({});
-
     const [category, setCategory] = useState({});
 
     useEffect(() => {
         window.scrollTo(0, 0);
         getProduct(_id);
-    }, []);
+    }, [_id]);
 
     const getProduct = async (_id) => {
         const { data } = await productApiRequest.getProductById(_id);
         setProduct(data);
         setCategory(data.category);
         console.log(data);
-        
     }
-    console.log(product)
+    
+    const onHandleAddToCart = _id => onAddToCart(_id);
     return (
         <div>
             <div className="page-title-overlap bg-dark pt-4">
@@ -31,7 +28,7 @@ const ProductDetail = () => {
                         <nav aria-label="breadcrumb">
                             <ol className="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start" style={{ backgroundColor: "#5a5c69" }}>
                                 <li className="breadcrumb-item"><a className="text-nowrap" href="index.html"><i className="czi-home" />Home</a></li>
-                                <li className="breadcrumb-item text-nowrap"><a href="#">{category.name}</a>
+                                <li className="breadcrumb-item text-nowrap"><Link to={`/categories/${category._id}`}>{category.name}</Link>
                                 </li>
                                 <li className="breadcrumb-item text-nowrap active" aria-current="page">{product.name}</li>
                             </ol>
@@ -111,7 +108,7 @@ const ProductDetail = () => {
                                                     <option value={4}>4</option>
                                                     <option value={5}>5</option>
                                                 </select>
-                                                <button className="btn btn-primary btn-shadow btn-block" type="button"><i className="czi-cart font-size-lg mr-2" />Add to Cart</button>
+                                                <button className="btn btn-primary btn-shadow btn-block" type="button" onClick={() => onHandleAddToCart(_id)}><i className="czi-cart font-size-lg mr-2" />Add to Cart</button>
                                             </div>
                                             <div className="d-flex mb-4">
                                                 <div className="w-100 mr-3">
@@ -122,17 +119,17 @@ const ProductDetail = () => {
                                                 </div>
                                             </div>
                                             {/* Product panels*/}
-                                            
+
                                             {/* Sharing*/}
                                             <h6 className="d-inline-block align-middle font-size-base my-2 mr-2">Share:</h6><a className="share-btn sb-twitter mr-2 my-2" href="#"><i className="czi-twitter" />Twitter</a><a className="share-btn sb-instagram mr-2 my-2" href="#"><i className="czi-instagram" />Instagram</a><a className="share-btn sb-facebook my-2" href="#"><i className="czi-facebook" />Facebook</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <h2>Detail</h2>
-                            <div dangerouslySetInnerHTML={{__html: product.detail}}>
-                            </div>
+                            <div dangerouslySetInnerHTML={{ __html: product.detail }}></div>
+                            
                         </div>
                     </div>
                 </div>
@@ -140,10 +137,6 @@ const ProductDetail = () => {
 
         </div>
     )
-}
-
-ProductDetail.propTypes = {
-
 }
 
 export default ProductDetail

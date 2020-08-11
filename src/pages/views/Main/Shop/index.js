@@ -1,7 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-const Shop = ({ products, categories }) => {
+import Pagination from '../../../../components/Pagination'
+const Shop = ({ products, categories, productsPerPage, totalProducts, paginate, onAddToCart }) => {
+    const onHandleAddToCart = _id => onAddToCart(_id);
     return (
         <div>
             <div className="page-title-overlap bg-dark pt-4">
@@ -47,7 +48,6 @@ const Shop = ({ products, categories }) => {
                                                                     </Link>
                                                                 </li>
                                                             ))}
-
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -113,14 +113,17 @@ const Shop = ({ products, categories }) => {
                                             </div>
                                         </div>
                                         <div className="card-body card-body-hidden">
-                                            <button className="btn btn-primary btn-sm btn-block mb-2" type="button" data-toggle="toast" data-target="#cart-toast"><i className="czi-cart font-size-sm mr-1" />Add to Cart</button>
-                                            <div className="text-center"><a className="nav-link-style font-size-ms" href="#quick-view-electro" data-toggle="modal"><i className="czi-eye align-middle mr-1" />Quick view</a></div>
+                                            <button onClick={() => onHandleAddToCart(_id)} className="btn btn-primary btn-sm btn-block mb-2" type="button" data-toggle="toast" data-target="#cart-toast">
+                                                <i className="czi-cart font-size-sm mr-1" />
+                                                Add to Cart
+                                            </button>
                                         </div>
                                     </div>
                                     <hr className="d-sm-none" />
                                 </div>
                             ))}
                         </div>
+                        <Pagination productsPerPage={productsPerPage} totalProducts={totalProducts} paginate={paginate}/>
                     </section>
                 </div>
             </div>
@@ -128,8 +131,6 @@ const Shop = ({ products, categories }) => {
     )
 }
 
-Shop.propTypes = {
 
-}
 
 export default Shop

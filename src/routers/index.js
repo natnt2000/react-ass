@@ -15,9 +15,13 @@ import Home from '../pages/views/Main/Home'
 import ProductDetail from '../pages/views/Main/Product/ProductDetail';
 import Shop from '../pages/views/Main/Shop';
 import ProductInCategory from '../pages/views/Main/Category';
+import Contact from '../pages/views/Main/Contact';
+import Cart from '../pages/views/Main/Cart';
+import Checkout from '../pages/views/Main/Checkout';
+import CheckoutSuccess from '../pages/views/Main/Checkout/CheckoutSuccess';
 
 
-const Routers = ({ products, onRemove, onAdd, onUpdate, categories, onAddCategory, onRemoveCategory, onUpdateCategory  }) => {
+const Routers = ({ products, onRemove, onAdd, onUpdate, categories, onAddCategory, onRemoveCategory, onUpdateCategory, currentProducts, productsPerPage, totalProducts, paginate, onAddToCart, cart, onRemoveItemInCart, onRemoveAllItem, onUpdateItemInCart, onRemoveCartInLocalStorage  }) => {
     const onHandleRemove = (_id) => {
         onRemove(_id)
     }
@@ -37,6 +41,19 @@ const Routers = ({ products, onRemove, onAdd, onUpdate, categories, onAddCategor
     const onHandleUpdateCategory = (_id, category) => {
         onUpdateCategory(_id, category);
     }
+
+    const onHandleAddToCart = _id => {
+        onAddToCart(_id)
+    }
+
+    const onHandleRemoveItemInCart = _id => onRemoveItemInCart(_id)
+
+    const onHandleRemoveAllItem = () => onRemoveAllItem()
+
+    const onHandleUpdateItemInCart = (data) => {
+        onUpdateItemInCart(data)
+    }
+    const onHandleRemoveCartInLocalStorage = () => onRemoveCartInLocalStorage();
     return (
         <Router>
             <Switch>
@@ -68,22 +85,34 @@ const Routers = ({ products, onRemove, onAdd, onUpdate, categories, onAddCategor
                     </LayoutAdmin>
                 </Route>
                 <Route path="/">
-                    <LayoutMain categories={categories}>
+                    <LayoutMain categories={categories} cart={cart} onRemoveItemInCart={onHandleRemoveItemInCart}>
                         <Switch>
                             <Route path="/" exact>
-                                <Home products={products}/>
+                                <Home products={products} onAddToCart={onHandleAddToCart}/>
                             </Route>
                             <Route path="/shop">
-                                <Shop products={products} categories={categories}/>
+                                <Shop products={currentProducts} totalProducts={totalProducts} categories={categories} productsPerPage={productsPerPage} paginate={paginate} onAddToCart={onHandleAddToCart}/>
                             </Route>
                             <Route path="/about">
                                 <About />
                             </Route>
+                            <Route path="/cart">
+                                <Cart cart={cart} onRemoveItemInCart={onHandleRemoveItemInCart} onRemoveAllItem={onHandleRemoveAllItem} onUpdateItemInCart={onHandleUpdateItemInCart}/>
+                            </Route>
+                            <Route path="/checkout">
+                                <Checkout cart={cart} onRemoveCartInLocalStorage={onHandleRemoveCartInLocalStorage}/>
+                            </Route>
+                            <Route path="/checkout-success">
+                                <CheckoutSuccess />
+                            </Route>
+                            <Route path="/contact">
+                                <Contact />
+                            </Route>
                             <Route path="/products/:_id" >
-                                <ProductDetail products={products}/>
+                                <ProductDetail products={products} onAddToCart={onHandleAddToCart}/>
                             </Route>
                             <Route path="/categories/:_id" >
-                                <ProductInCategory categories={categories}/>
+                                <ProductInCategory categories={categories} onAddToCart={onHandleAddToCart}/>
                             </Route>
                         </Switch>
                     </LayoutMain>

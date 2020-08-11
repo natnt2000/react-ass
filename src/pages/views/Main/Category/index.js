@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Link, useParams } from 'react-router-dom'
 import categoryApiRequest from '../../../../api/categoryApi'
-const ProductInCategory = ({categories}) => {
+const ProductInCategory = ({categories, onAddToCart}) => {
     const { _id } = useParams();
     const [category, setCategory] = useState({});
     const [products, setProducts] = useState([]);
@@ -15,11 +15,10 @@ const ProductInCategory = ({categories}) => {
         setCategory(data);
         setProducts(data.products);
     }
-
-
+    const onHandleAddToCart = _id => onAddToCart(_id);
     return (
         <div>
-            <div className="page-title-overlap bg-dark pt-4">
+            <div className="page-title-overlap bg-dark pt-4" style={{backgroundImage: `url(${category.image})`}}>
                 <div className="container d-lg-flex justify-content-between py-2 py-lg-3">
                     <div className="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
                         <nav aria-label="breadcrumb">
@@ -128,8 +127,7 @@ const ProductInCategory = ({categories}) => {
                                             </div>
                                         </div>
                                         <div className="card-body card-body-hidden">
-                                            <button className="btn btn-primary btn-sm btn-block mb-2" type="button" data-toggle="toast" data-target="#cart-toast"><i className="czi-cart font-size-sm mr-1" />Add to Cart</button>
-                                            <div className="text-center"><a className="nav-link-style font-size-ms" href="#quick-view-electro" data-toggle="modal"><i className="czi-eye align-middle mr-1" />Quick view</a></div>
+                                            <button className="btn btn-primary btn-sm btn-block mb-2" type="button" data-toggle="toast" data-target="#cart-toast" onClick={() => onHandleAddToCart(_id)}><i className="czi-cart font-size-sm mr-1" />Add to Cart</button>
                                         </div>
                                     </div>
                                     <hr className="d-sm-none" />

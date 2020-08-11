@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { storage } from '../../../../firebase'
@@ -14,7 +13,6 @@ const ProductForm = ({ onAdd, title, products, onUpdate }) => {
     const { register, handleSubmit, watch, errors } = useForm();
 
     const [valueInput, setValueInput] = useState({});
-    const [valueTextarea, setValueTextarea] = useState("");
     const [categories, setCategories] = useState([]);
     // console.log(cates);
     const getProduct = async (_id) => {
@@ -25,12 +23,6 @@ const ProductForm = ({ onAdd, title, products, onUpdate }) => {
             category: data.category._id
         });
     }
-
-    const getCategories = async () => {
-        const { data } = await categoryApiRequest.getAll();
-        setCategories(data);
-    }
-
     useEffect(() => {
         window.scrollTo(0, 0);
         // getCategories();
@@ -128,7 +120,7 @@ const ProductForm = ({ onAdd, title, products, onUpdate }) => {
                                     )}
 
                                     {errors.name && errors.name.type === 'minLength' && (
-                                        <p className="text-danger">This field is  required min length of 5</p>
+                                        <p className="text-danger">This field is required min length of 5</p>
                                     )}
                                     {errors.name && errors.name.type === 'pattern' && (
                                         <p className="text-danger">This field is not empty</p>
@@ -247,8 +239,6 @@ const ProductForm = ({ onAdd, title, products, onUpdate }) => {
     )
 }
 
-ProductForm.propTypes = {
 
-}
 
 export default ProductForm

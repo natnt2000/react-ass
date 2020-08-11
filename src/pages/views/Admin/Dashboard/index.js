@@ -16,7 +16,7 @@ const Dashboard = ({ products, categories }) => {
                                 <div className="row no-gutters align-items-center">
                                     <div className="col mr-2">
                                         <Link className="text-xs font-weight-bold text-primary text-uppercase mb-1" to="/admin/categories">Categories</Link>
-                                        <div className="h5 mb-0 font-weight-bold text-gray-800">{products.length}</div>
+                                        <div className="h5 mb-0 font-weight-bold text-gray-800">{categories.length}</div>
                                     </div>
                                     <div className="col-auto">
                                         <i className="fas fa-list-alt fa-2x text-gray-300" />
@@ -32,7 +32,7 @@ const Dashboard = ({ products, categories }) => {
                                 <div className="row no-gutters align-items-center">
                                     <div className="col mr-2">
                                         <Link className="text-xs font-weight-bold text-success text-uppercase mb-1" to="/admin/products">Products</Link>
-                                        <div className="h5 mb-0 font-weight-bold text-gray-800">{categories.length}</div>
+                                        <div className="h5 mb-0 font-weight-bold text-gray-800">{products.length}</div>
                                     </div>
                                     <div className="col-auto">
                                         <i className="fas fa-mobile-alt fa-2x text-gray-300" />

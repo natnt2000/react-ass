@@ -1,8 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+
 import { Link } from 'react-router-dom'
 
-const Header = ({ categories }) => {
+const Header = ({ categories, cart, onRemoveItemInCart }) => {
+    let totalPrice = 0;
+    cart.forEach(item => {
+        totalPrice += item.quantity * item.price;
+    });
+
+    const onHandleRemoveItemInCart = _id => onRemoveItemInCart(_id);
     return (
         <div>
             <header className="box-shadow-sm">
@@ -30,51 +36,46 @@ const Header = ({ categories }) => {
                                     <div className="navbar-tool-icon-box"><i className="navbar-tool-icon czi-menu" /></div></a><a className="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="#signin-modal" data-toggle="modal">
                                     <div className="navbar-tool-icon-box"><i className="navbar-tool-icon czi-user" /></div>
                                     <div className="navbar-tool-text ml-n3"><small>Hello, Sign in</small>My Account</div></a>
-                                <div className="navbar-tool dropdown ml-3"><a className="navbar-tool-icon-box bg-secondary dropdown-toggle" href="shop-cart.html"><span className="navbar-tool-label">4</span><i className="navbar-tool-icon czi-cart" /></a><a className="navbar-tool-text" href="shop-cart.html"><small>My Cart</small>$1,247.00</a>
+                                <div className="navbar-tool dropdown ml-3"><Link className="navbar-tool-icon-box bg-secondary dropdown-toggle" to="/cart"><span className="navbar-tool-label">{cart.length}</span><i className="navbar-tool-icon czi-cart" /></Link><Link className="navbar-tool-text" to="/cart"><small>My Cart</small>{totalPrice}</Link>
                                     {/* Cart dropdown*/}
                                     <div className="dropdown-menu dropdown-menu-right" style={{ width: '20rem' }}>
                                         <div className="widget widget-cart px-3 pt-2 pb-3">
                                             <div style={{ height: '15rem' }} data-simplebar data-simplebar-auto-hide="false">
-                                                <div className="widget-cart-item pb-2 border-bottom">
-                                                    <button className="close text-danger" type="button" aria-label="Remove"><span aria-hidden="true">×</span></button>
-                                                    <div className="media align-items-center"><a className="d-block mr-2" href="shop-single-v2.html"><img width={64} src="https://demo.createx.studio/cartzilla/img/shop/cart/widget/05.jpg" alt="Product" /></a>
-                                                        <div className="media-body">
-                                                            <h6 className="widget-product-title"><a href="shop-single-v2.html">Bluetooth Headphones</a></h6>
-                                                            <div className="widget-product-meta"><span className="text-accent mr-2">$259.<small>00</small></span><span className="text-muted">x 1</span></div>
+                                                {cart.length === 0 ? <h5>No items in cart. Let's shopping now</h5> : ""}
+                                                {cart.map((item, index) => (
+                                                    <div className="widget-cart-item pb-2 border-bottom" key={index}>
+                                                        <button className="close text-danger" type="button" aria-label="Remove" onClick={() => onHandleRemoveItemInCart(item._id)}><span aria-hidden="true">×</span></button>
+                                                        <div className="media align-items-center"><Link className="d-block mr-2" to={`/products/${item._id}`}><img width={64} src={item.image} alt="Product" /></Link>
+                                                            <div className="media-body">
+                                                                <h6 className="widget-product-title">
+                                                                    <Link to={`/products/${item._id}`}>{item.name}</Link>
+                                                                </h6>
+                                                                <div className="widget-product-meta"><span className="text-accent mr-2">{item.price}</span><span className="text-muted">x {item.quantity}</span></div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div className="widget-cart-item py-2 border-bottom">
-                                                    <button className="close text-danger" type="button" aria-label="Remove"><span aria-hidden="true">×</span></button>
-                                                    <div className="media align-items-center"><a className="d-block mr-2" href="shop-single-v2.html"><img width={64} src="https://demo.createx.studio/cartzilla/img/shop/cart/widget/05.jpg" alt="Product" /></a>
-                                                        <div className="media-body">
-                                                            <h6 className="widget-product-title"><a href="shop-single-v2.html">Cloud Security Camera</a></h6>
-                                                            <div className="widget-product-meta"><span className="text-accent mr-2">$122.<small>00</small></span><span className="text-muted">x 1</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="widget-cart-item py-2 border-bottom">
-                                                    <button className="close text-danger" type="button" aria-label="Remove"><span aria-hidden="true">×</span></button>
-                                                    <div className="media align-items-center"><a className="d-block mr-2" href="shop-single-v2.html"><img width={64} src="https://demo.createx.studio/cartzilla/img/shop/cart/widget/05.jpg" alt="Product" /></a>
-                                                        <div className="media-body">
-                                                            <h6 className="widget-product-title"><a href="shop-single-v2.html">Android Smartphone S10</a></h6>
-                                                            <div className="widget-product-meta"><span className="text-accent mr-2">$799.<small>00</small></span><span className="text-muted">x 1</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="widget-cart-item py-2 border-bottom">
-                                                    <button className="close text-danger" type="button" aria-label="Remove"><span aria-hidden="true">×</span></button>
-                                                    <div className="media align-items-center"><a className="d-block mr-2" href="shop-single-v2.html"><img width={64} src="https://demo.createx.studio/cartzilla/img/shop/cart/widget/05.jpg" alt="Product" /></a>
-                                                        <div className="media-body">
-                                                            <h6 className="widget-product-title"><a href="shop-single-v2.html">Android Smart TV Box</a></h6>
-                                                            <div className="widget-product-meta"><span className="text-accent mr-2">$67.<small>00</small></span><span className="text-muted">x 1</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                ))}
                                             </div>
-                                            <div className="d-flex flex-wrap justify-content-between align-items-center py-3">
-                                                <div className="font-size-sm mr-2 py-2"><span className="text-muted">Subtotal:</span><span className="text-accent font-size-base ml-1">$1,247.<small>00</small></span></div><a className="btn btn-outline-secondary btn-sm" href="shop-cart.html">Expand cart<i className="czi-arrow-right ml-1 mr-n1" /></a>
-                                            </div><a className="btn btn-primary btn-sm btn-block" href="checkout-details.html"><i className="czi-card mr-2 font-size-base align-middle" />Checkout</a>
+                                            {cart.length > 0 ? 
+                                                <div>
+                                                    <div className="d-flex flex-wrap justify-content-between align-items-center py-3">
+                                                        <div className="font-size-sm mr-2 py-2">
+                                                            <span className="text-muted">Subtotal:</span>
+                                                            <span className="text-accent font-size-base ml-1">{totalPrice}</span>
+                                                        </div>
+                                                        <Link className="btn btn-outline-secondary btn-sm" to="/cart">
+                                                            Expand cart
+                                                            <i className="czi-arrow-right ml-1 mr-n1" />
+                                                        </Link>
+                                                    </div>
+                                                    <Link className="btn btn-primary btn-sm btn-block" to="/checkout">
+                                                        <i className="czi-card mr-2 font-size-base align-middle" />
+                                                        Checkout
+                                                    </Link>
+                                                </div> 
+                                                : 
+                                                ""
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -112,6 +113,9 @@ const Header = ({ categories }) => {
                                     <li className="nav-item dropdown active">
                                         <Link className="nav-link dropdown-toggle" to="/about" data-toggle="dropdown">About</Link>
                                     </li>
+                                    <li className="nav-item dropdown active">
+                                        <Link className="nav-link dropdown-toggle" to="/contact" data-toggle="dropdown">Contact</Link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -122,8 +126,5 @@ const Header = ({ categories }) => {
     )
 }
 
-Header.propTypes = {
-
-}
 
 export default Header
