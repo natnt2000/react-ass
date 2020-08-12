@@ -8,8 +8,6 @@ const App = () => {
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(6)
   const [cart, setCart] = useState(localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : []);
   useEffect(() => {
     getCategories();
@@ -170,14 +168,7 @@ const App = () => {
     }
   }
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct)
-
-  const paginate = pageNumber => {
-    window.scrollTo(0, 0);
-    setCurrentPage(pageNumber)
-  };
+  
 
   const onHandleAddToCart = (_id) => {
     const product = products.find(product => product._id === _id)
@@ -287,10 +278,6 @@ const App = () => {
         onAddCategory={onHandleAddCategory}
         onRemoveCategory={onHandleRemoveCategory}
         onUpdateCategory={onHandleUpdateCategory}
-        currentProducts={currentProducts}
-        productsPerPage={productsPerPage}
-        totalProducts={products.length}
-        paginate={paginate}
         cart={cart}
         onAddToCart={onHandleAddToCart}
         onRemoveItemInCart={onHandleRemoveItemInCart}

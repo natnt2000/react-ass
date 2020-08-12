@@ -33,8 +33,6 @@ const Checkout = ({ cart, onRemoveCartInLocalStorage }) => {
             onRemoveCartInLocalStorage();
             history.push('/checkout-success');
         });
-
-        
     }
     return (
         <div>

@@ -21,7 +21,7 @@ import Checkout from '../pages/views/Main/Checkout';
 import CheckoutSuccess from '../pages/views/Main/Checkout/CheckoutSuccess';
 
 
-const Routers = ({ products, onRemove, onAdd, onUpdate, categories, onAddCategory, onRemoveCategory, onUpdateCategory, currentProducts, productsPerPage, totalProducts, paginate, onAddToCart, cart, onRemoveItemInCart, onRemoveAllItem, onUpdateItemInCart, onRemoveCartInLocalStorage  }) => {
+const Routers = ({ products, onRemove, onAdd, onUpdate, categories, onAddCategory, onRemoveCategory, onUpdateCategory, onAddToCart, cart, onRemoveItemInCart, onRemoveAllItem, onUpdateItemInCart, onRemoveCartInLocalStorage  }) => {
     const onHandleRemove = (_id) => {
         onRemove(_id)
     }
@@ -91,7 +91,7 @@ const Routers = ({ products, onRemove, onAdd, onUpdate, categories, onAddCategor
                                 <Home products={products} onAddToCart={onHandleAddToCart}/>
                             </Route>
                             <Route path="/shop">
-                                <Shop products={currentProducts} totalProducts={totalProducts} categories={categories} productsPerPage={productsPerPage} paginate={paginate} onAddToCart={onHandleAddToCart}/>
+                                <Shop products={products} categories={categories} onAddToCart={onHandleAddToCart}/>
                             </Route>
                             <Route path="/about">
                                 <About />

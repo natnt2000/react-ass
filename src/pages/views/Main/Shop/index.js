@@ -1,8 +1,34 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import Pagination from '../../../../components/Pagination'
-const Shop = ({ products, categories, productsPerPage, totalProducts, paginate, onAddToCart }) => {
+import { useForm } from 'react-hook-form';
+const Shop = ({ categories, onAddToCart }) => {
     const onHandleAddToCart = _id => onAddToCart(_id);
+    const dataProducts = JSON.parse(localStorage.getItem('products'))
+    const [products, setProducts] = useState([...dataProducts].reverse());
+    const {register, handleSubmit} = useForm()
+    const onHandleChangeSortBy = e => {
+        const {value} = e.target
+        let newProducts = [];
+        if(value == 1) {
+            newProducts = [...dataProducts].reverse();
+        }else if(value == 2) {
+            newProducts = [...products].sort((a, b) => a.price - b.price);
+        }
+        else if(value == 3) {
+            newProducts = [...products].sort((a, b) => b.price - a.price);
+        }else if(value == 4) {
+            newProducts = [...products].sort((a, b) => a.name < b.name ? -1 : (a.name > b.name ? 1 : 0));
+        }else if(value == 5) {
+            newProducts = [...products].sort((a, b) => a.name > b.name ? -1 : (a.name < b.name ? 1 : 0));
+        }
+        setProducts(newProducts);
+    }
+
+    const onHandleSubmitFindToPrice = data => {
+        const newProducts = products.filter(product => product.price >= Number(data.min) && product.price <= Number(data.max))
+        // console.log(newProducts)
+        setProducts(newProducts);
+    }
     return (
         <div>
             <div className="page-title-overlap bg-dark pt-4">
@@ -58,22 +84,25 @@ const Shop = ({ products, categories, productsPerPage, totalProducts, paginate, 
                                 {/* Price range*/}
                                 <div className="widget mb-4 pb-4 border-bottom">
                                     <h3 className="widget-title">Price</h3>
-                                    <div className="cz-range-slider" data-start-min={250} data-start-max={680} data-min={0} data-max={1000} data-step={1}>
+                                    <div className="cz-range-slider">
                                         <div className="cz-range-slider-ui" />
-                                        <div className="d-flex pb-1">
-                                            <div className="w-50 pr-2 mr-2">
-                                                <div className="input-group input-group-sm">
-                                                    <div className="input-group-prepend"><span className="input-group-text">$</span></div>
-                                                    <input className="form-control cz-range-slider-value-min" type="text" />
+                                        <form onSubmit={handleSubmit(onHandleSubmitFindToPrice)}>
+                                            <div className="d-flex pb-1">
+                                                <div className="w-50 pr-2 mr-2">
+                                                    <div className="input-group input-group-sm">
+                                                        <div className="input-group-prepend"><span className="input-group-text">VND</span></div>
+                                                        <input className="form-control cz-range-slider-value-min" name="min" type="text" ref={register({required: true, pattern: /^\d+$/})}/>
+                                                    </div>
+                                                </div>
+                                                <div className="w-50 pl-2">
+                                                    <div className="input-group input-group-sm">
+                                                        <div className="input-group-prepend"><span className="input-group-text">VND</span></div>
+                                                        <input className="form-control cz-range-slider-value-max" name="max" type="text" ref={register({required: true, pattern: /^\d+$/})}/>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="w-50 pl-2">
-                                                <div className="input-group input-group-sm">
-                                                    <div className="input-group-prepend"><span className="input-group-text">$</span></div>
-                                                    <input className="form-control cz-range-slider-value-max" type="text" />
-                                                </div>
-                                            </div>
-                                        </div>
+                                            <button className="btn btn-primary mt-3" type="submit">Find</button>
+                                        </form>
                                     </div>
                                 </div>
                                 {/* Filter by Brand*/}
@@ -87,12 +116,12 @@ const Shop = ({ products, categories, productsPerPage, totalProducts, paginate, 
                             <div className="d-flex flex-wrap">
                                 <div className="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
                                     <label className="text-light opacity-75 text-nowrap mr-2 d-none d-sm-block" htmlFor="sorting">Sort by:</label>
-                                    <select className="form-control custom-select" id="sorting">
-                                        <option>Newest</option>
-                                        <option>Low - Hight Price</option>
-                                        <option>High - Low Price</option>
-                                        <option>A - Z Order</option>
-                                        <option>Z - A Order</option>
+                                    <select className="form-control custom-select" id="sorting" onChange={onHandleChangeSortBy}>
+                                        <option value="1">Newest</option>
+                                        <option value="2">Low - Hight Price</option>
+                                        <option value="3">High - Low Price</option>
+                                        <option value="4">A - Z Order</option>
+                                        <option value="5">Z - A Order</option>
                                     </select><span className="font-size-sm text-light opacity-75 text-nowrap ml-2 d-none d-md-block">of {products.length} products</span>
                                 </div>
                             </div>
@@ -123,7 +152,6 @@ const Shop = ({ products, categories, productsPerPage, totalProducts, paginate, 
                                 </div>
                             ))}
                         </div>
-                        <Pagination productsPerPage={productsPerPage} totalProducts={totalProducts} paginate={paginate}/>
                     </section>
                 </div>
             </div>

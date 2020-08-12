@@ -29,7 +29,7 @@ const ProductsManager = ({ products, onRemove }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {products.map(({ _id, name, image, price, status, category }, index) => (
+                                {products.reverse().map(({ _id, name, image, price, status, category }, index) => (
                                     <tr key={index}>
                                         <th scope="row">{index+1}</th>
                                         <td>{name}</td>
