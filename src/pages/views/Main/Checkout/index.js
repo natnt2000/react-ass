@@ -8,7 +8,7 @@ const Checkout = ({ cart, onRemoveCartInLocalStorage }) => {
     let order = ``;
     cart.forEach(item => {
         totalPrice += item.quantity * item.price;
-        order += `${item.name} - ${item.price} - ${item.quantity} || `
+        order += `${item.name}-${item.price}-${item.quantity}  `
     });
     const history = useHistory();
     const {register, handleSubmit, errors} = useForm();
